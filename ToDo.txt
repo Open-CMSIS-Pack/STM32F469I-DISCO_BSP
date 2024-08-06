@@ -1,0 +1,18 @@
+List of things TO DO on this pack:
+
+- Board Layer must be reviewed
+
+- README.md files must be reviewed
+
+- resolve SDIO problem
+  CubeMX creates 'HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B)' function call in main.c
+  this function call returns always with error but I was not able to find the reason.
+  As workaround I commented out this pease of code!
+  Must be considered when CubeMX generator is called!
+
+- uSD Card Detect pin (PG2)
+  Pin is configured but not listed in MX_Device.h
+
+- Examples need to be tested
+  Blinky works
+  USB_Device HID works
