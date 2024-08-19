@@ -142,7 +142,6 @@ int main(void)
   MX_LTDC_Init();
   MX_QUADSPI_Init();
   MX_SAI1_Init();
-  MX_SDIO_SD_Init();
   MX_TIM1_Init();
   MX_USART3_UART_Init();
   MX_USART6_UART_Init();
@@ -664,12 +663,10 @@ static void MX_SDIO_SD_Init(void)
   {
     Error_Handler();
   }
-// Martin: commented out as workaround.
-//         Function call returns with error but I could not find the reason. :-(
-//  if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK)
-//  {
-//    Error_Handler();
-//  }
+  if (HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B) != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE BEGIN SDIO_Init 2 */
 
   /* USER CODE END SDIO_Init 2 */
@@ -991,11 +988,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Alternate = GPIO_AF2_TIM4;
   HAL_GPIO_Init(MIC_CK_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : uSD_Detect_Pin */
-  GPIO_InitStruct.Pin = uSD_Detect_Pin;
+  /*Configure GPIO pin : MemoryCard_1_CD_Pin */
+  GPIO_InitStruct.Pin = MemoryCard_1_CD_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(uSD_Detect_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(MemoryCard_1_CD_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LCD_INT_Pin */
   GPIO_InitStruct.Pin = LCD_INT_Pin;

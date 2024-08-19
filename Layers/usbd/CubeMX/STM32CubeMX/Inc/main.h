@@ -207,8 +207,8 @@ extern int shield_setup (void);
 #define A9_GPIO_Port GPIOF
 #define MIC_CK_Pin GPIO_PIN_13
 #define MIC_CK_GPIO_Port GPIOD
-#define uSD_Detect_Pin GPIO_PIN_2
-#define uSD_Detect_GPIO_Port GPIOG
+#define MemoryCard_1_CD_Pin GPIO_PIN_2
+#define MemoryCard_1_CD_GPIO_Port GPIOG
 #define LCD_INT_Pin GPIO_PIN_5
 #define LCD_INT_GPIO_Port GPIOJ
 #define D20_Pin GPIO_PIN_12
