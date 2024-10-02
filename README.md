@@ -1,4 +1,7 @@
 [![Version](https://img.shields.io/github/v/release/Open-CMSIS-Pack/STM32F469I-DISCO_BSP)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/releases/latest)
+[![License](https://img.shields.io/github/license/Open-CMSIS-Pack/STM32F469I-DISCO_BSP?label)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/LICENSE)
+[![Examples Build Test](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/Test-Examples.yml?logo=arm&logoColor=0091bd&label=Examples%20Build%20Test)](./.ci)
+[![MDK-Middleware Build Test](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/Test-MDK-Middleware-RefApps.yml?logo=arm&logoColor=0091bd&label=MDK-Middleware%20Build%20Test)](./.ci)
 
 # STM32F469I-DISCO_BSP
 
@@ -12,24 +15,13 @@ This BSP uses the generator integration of the [CMSIS-Toolbox to Configure STM32
 
 Directory                   | Description
 :---------------------------|:--------------
-[.github/workflows](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/.github/workflows)  | [GitHub Actions](#github-actions).
-[CMSIS/Driver](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/CMSIS/Driver)            | Contains a [CMSIS-Driver VIO](https://arm-software.github.io/CMSIS_6/latest/Driver/group__vio__interface__gr.html) that is configured for the board peripherals.
-[Documents](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Documents)                  | Information about the board provided by STMicroelectronics.
-[Examples/Blinky](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Examples/Blinky)      | Blinky example in *csolution project format* using [CMSIS-Driver VIO](https://arm-software.github.io/CMSIS_6/latest/Driver/group__vio__interface__gr.html) and [CMSIS-Compiler](https://arm-software.github.io/CMSIS-Compiler/main/index.html) for printf I/O retargeting.
-[Images](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Images)                        | [Pictures](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/Images/stm32f469i-disco_large.png) of the board.
-[Layers](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Layers)                        | Board layers for using the board with [CMSIS-Toolbox - Reference Applications](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md).
-
-## Usage
-
-This BSP requires the [Device Family Pack (DFP) for the STM32F4 series](https://github.com/Open-CMSIS-Pack/STM32F4xx_DFP).
-
-- [Examples/Blinky](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Examples/Blinky) shows the usage in a [*csolution project*](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/Examples/Blinky/Blinky.csolution.yml).
-  
-- [Board Layers](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Layers) are designed for [Reference Applications](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md) and allow to run various device-agnostic examples on this board.
-
-The device is configured for this board using [STM32CubeMX](https://www.st.com/en/development-tools/stm32cubemx.html). For additional information refer to:
-
-- [CMSIS-Toolbox - Configure STM32 Devices with CubeMX](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/CubeMX.md) for usage information of STM32CubeMX with CMSIS projects.
+[.ci](./.ci)                | Files that are related to the Continuous Integration (CI) tests of this BSP.
+[.github/workflows](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/.github/workflows) | [GitHub Actions](#github-actions) scripts described below.
+[CMSIS/Driver](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/CMSIS/Driver)           | Contains a [CMSIS-Driver VIO](https://arm-software.github.io/CMSIS_6/latest/Driver/group__vio__interface__gr.html) that is configured for the board peripherals.
+[Documents](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Documents)                 | [Usage overview](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Documents/OVERVIEW.md) for examples and board documentation provided by STMicroelectronics.
+[Examples/Blinky](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Examples/Blinky)     | Blinky example in *csolution project format* using [CMSIS-Driver VIO](https://arm-software.github.io/CMSIS_6/latest/Driver/group__vio__interface__gr.html) and [CMSIS-Compiler](https://arm-software.github.io/CMSIS-Compiler/main/index.html) for printf I/O retargeting.
+[Images](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Images)                       | [Pictures](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/Images/stm32f469i-disco_large.png) of the board.
+[Layers](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Layers)                       | Board layers for using the board with [CMSIS-Toolbox - Reference Applications](https://github.com/Open-CMSIS-Pack/cmsis-toolbox/blob/main/docs/ReferenceApplications.md).
 
 ## Using the development repository
 
@@ -41,8 +33,8 @@ This development repository can be used in a local directory and [mapped as soft
 
 The software pack is generated using bash shell scripts.
 
-- `./gen_pack.sh` based on [Open-CMSIS-Pack/gen-pack](https://github.com/Open-CMSIS-Pack/gen-pack)
-generates the software pack. Run this script locally with:
+- `./gen_pack.sh` based on [Open-CMSIS-Pack/gen-pack](https://github.com/Open-CMSIS-Pack/gen-pack) generates the software pack.
+Run this script locally with:
 
       STM32F469I-DISCO_BSP $ ./gen_pack.sh
 
@@ -51,11 +43,8 @@ generates the software pack. Run this script locally with:
 The repository uses GitHub Actions to generate the pack and build examples:
 
 - `.github/workflows/pack.yml` based on [Open-CMSIS-Pack/gen-pack-action](https://github.com/Open-CMSIS-Pack/gen-pack-action) generates pack using the [Generate software pack](#generate-software-pack) scripts.
-- `.github/workflows/examples.yml` builds the examples.
-
-## License
-
-The BSP is licensed under [![License](https://img.shields.io/github/license/Open-CMSIS-Pack/STM32F469I-DISCO_BSP?label)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/LICENSE).
+- `.github/workflows/Test-Examples.yml` test build of examples.
+- `.github/workflows/Test-MDK-Middleware-RefApps.yml` test build of MDK Middleware Reference Applications with different compilers.
 
 ## Issues
 
