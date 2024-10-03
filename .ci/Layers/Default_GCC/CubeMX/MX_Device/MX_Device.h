@@ -1,6 +1,6 @@
 /******************************************************************************
  * File Name   : MX_Device.h
- * Date        : 03/10/2024 07:45:31
+ * Date        : 03/10/2024 09:37:55
  * Description : STM32Cube MX parameter definitions
  * Note        : This file is generated with a generator out of the
  *               STM32CubeMX project and its generated files (DO NOT EDIT!)
@@ -41,6 +41,9 @@
 
 /*------------------------------ I2C2           -----------------------------*/
 #define MX_I2C2                                 1
+
+/* Peripheral Clock Frequency */
+#define MX_I2C2_PERIPH_CLOCK_FREQ               45000000
 
 /* Pins */
 

@@ -60,6 +60,7 @@ extern int shield_setup (void);
 
 /* Private defines -----------------------------------------------------------*/
 #define I2C1_PERIPH_CLOCK_FREQ 45000000
+#define I2C2_PERIPH_CLOCK_FREQ 45000000
 #define SAI1_FSA_Pin GPIO_PIN_4
 #define SAI1_FSA_GPIO_Port GPIOE
 #define SPKR_HP_Pin GPIO_PIN_3
