@@ -1,6 +1,6 @@
 /******************************************************************************
  * File Name   : MX_Device.h
- * Date        : 06/08/2024 13:57:58
+ * Date        : 03/10/2024 09:01:15
  * Description : STM32Cube MX parameter definitions
  * Note        : This file is generated with a generator out of the
  *               STM32CubeMX project and its generated files (DO NOT EDIT!)
@@ -58,68 +58,6 @@
 #define MX_I2C2_SDA_GPIO_PuPd                   GPIO_PULLUP
 #define MX_I2C2_SDA_GPIO_Speed                  GPIO_SPEED_FREQ_VERY_HIGH
 #define MX_I2C2_SDA_GPIO_AF                     GPIO_AF4_I2C2
-
-/*------------------------------ SDIO           -----------------------------*/
-#define MX_SDIO                                 1
-
-/* Mode */
-#define MX_SDIO_MODE_SD                         1
-
-/* Pins */
-
-/* SDIO_CK */
-#define MX_SDIO_CK_Pin                          PC12
-#define MX_SDIO_CK_GPIO_Pin                     GPIO_PIN_12
-#define MX_SDIO_CK_GPIOx                        GPIOC
-#define MX_SDIO_CK_GPIO_Mode                    GPIO_MODE_AF_PP
-#define MX_SDIO_CK_GPIO_PuPd                    GPIO_NOPULL
-#define MX_SDIO_CK_GPIO_Speed                   GPIO_SPEED_FREQ_VERY_HIGH
-#define MX_SDIO_CK_GPIO_AF                      GPIO_AF12_SDIO
-
-/* SDIO_CMD */
-#define MX_SDIO_CMD_Pin                         PD2
-#define MX_SDIO_CMD_GPIO_Pin                    GPIO_PIN_2
-#define MX_SDIO_CMD_GPIOx                       GPIOD
-#define MX_SDIO_CMD_GPIO_Mode                   GPIO_MODE_AF_PP
-#define MX_SDIO_CMD_GPIO_PuPd                   GPIO_NOPULL
-#define MX_SDIO_CMD_GPIO_Speed                  GPIO_SPEED_FREQ_VERY_HIGH
-#define MX_SDIO_CMD_GPIO_AF                     GPIO_AF12_SDIO
-
-/* SDIO_D0 */
-#define MX_SDIO_D0_Pin                          PC8
-#define MX_SDIO_D0_GPIO_Pin                     GPIO_PIN_8
-#define MX_SDIO_D0_GPIOx                        GPIOC
-#define MX_SDIO_D0_GPIO_Mode                    GPIO_MODE_AF_PP
-#define MX_SDIO_D0_GPIO_PuPd                    GPIO_NOPULL
-#define MX_SDIO_D0_GPIO_Speed                   GPIO_SPEED_FREQ_VERY_HIGH
-#define MX_SDIO_D0_GPIO_AF                      GPIO_AF12_SDIO
-
-/* SDIO_D1 */
-#define MX_SDIO_D1_Pin                          PC9
-#define MX_SDIO_D1_GPIO_Pin                     GPIO_PIN_9
-#define MX_SDIO_D1_GPIOx                        GPIOC
-#define MX_SDIO_D1_GPIO_Mode                    GPIO_MODE_AF_PP
-#define MX_SDIO_D1_GPIO_PuPd                    GPIO_NOPULL
-#define MX_SDIO_D1_GPIO_Speed                   GPIO_SPEED_FREQ_VERY_HIGH
-#define MX_SDIO_D1_GPIO_AF                      GPIO_AF12_SDIO
-
-/* SDIO_D2 */
-#define MX_SDIO_D2_Pin                          PC10
-#define MX_SDIO_D2_GPIO_Pin                     GPIO_PIN_10
-#define MX_SDIO_D2_GPIOx                        GPIOC
-#define MX_SDIO_D2_GPIO_Mode                    GPIO_MODE_AF_PP
-#define MX_SDIO_D2_GPIO_PuPd                    GPIO_NOPULL
-#define MX_SDIO_D2_GPIO_Speed                   GPIO_SPEED_FREQ_VERY_HIGH
-#define MX_SDIO_D2_GPIO_AF                      GPIO_AF12_SDIO
-
-/* SDIO_D3 */
-#define MX_SDIO_D3_Pin                          PC11
-#define MX_SDIO_D3_GPIO_Pin                     GPIO_PIN_11
-#define MX_SDIO_D3_GPIOx                        GPIOC
-#define MX_SDIO_D3_GPIO_Mode                    GPIO_MODE_AF_PP
-#define MX_SDIO_D3_GPIO_PuPd                    GPIO_NOPULL
-#define MX_SDIO_D3_GPIO_Speed                   GPIO_SPEED_FREQ_VERY_HIGH
-#define MX_SDIO_D3_GPIO_AF                      GPIO_AF12_SDIO
 
 /*------------------------------ USART3         -----------------------------*/
 #define MX_USART3                               1

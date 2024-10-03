@@ -1,7 +1,11 @@
 # A solution is a collection of related projects that share same base configuration.
 solution:
-  created-for: CMSIS-Toolbox@2.5.0
+  created-for: CMSIS-Toolbox@2.6.0
   cdefault:
+
+  # List of tested compilers that can be selected
+  select-compiler:
+    - compiler: AC6
 
   # List the packs that define the device and/or board.
   packs:
@@ -9,8 +13,8 @@ solution:
     - pack: Keil::STM32F469I-DISCO_BSP@>=1.0.0-0
     - pack: ARM::CMSIS-Driver_STM32@>=1.0.0-0
     - pack: ARM::CMSIS@>=6.0.0
-    - pack: ARM::CMSIS-RTX@>=5.9.0
     - pack: ARM::CMSIS-Compiler@>=2.0.0
+    - pack: ARM::CMSIS-RTX@>=5.9.0
 
   # List different hardware targets that are used to deploy the solution.
   target-types:
