@@ -1,8 +1,8 @@
 /******************************************************************************
  * @file     vio_STM32F469I-DISCO.c
- * @brief    Virtual I/O implementation for board STM32F769I-DISCO
+ * @brief    Virtual I/O implementation for board STM32F469I-DISCO
  * @version  V1.0.0
- * @date     02. August 2024
+ * @date     08. October 2024
  ******************************************************************************/
 /*
  * Copyright (c) 2020-2024 Arm Limited (or its affiliates).
@@ -27,13 +27,13 @@
 
 The table below lists the physical I/O mapping of this CMSIS-Driver VIO implementation.
 
-Virtual Resource  | Variable       | Physical Resource on STM32F769I-DISCO          |
-:-----------------|:---------------|:-----------------------------------------------|
-vioBUTTON0        | vioSignalIn.0  | GPIO A.0:  Button USER                         |
-vioLED0           | vioSignalOut.0 | GPIO G.6:  LD1 GREEN                           |
-vioLED1           | vioSignalOut.1 | GPIO D.5:  LD2 ORANGE                          |
-vioLED2           | vioSignalOut.2 | GPIO D.4:  LD3 RED                             |
-vioLED3           | vioSignalOut.3 | GPIO K.3:  LD4 BLUE                            |
+| Virtual I/O   | Variable       | Board component      | Pin
+|:--------------|:---------------|:---------------------|:------
+| vioBUTTON0    | vioSignalIn.0  | Tamper button (B1)   | PA0
+| vioLED0       | vioSignalOut.0 | LED red       (LD3)  | PD5
+| vioLED1       | vioSignalOut.1 | LED green     (LD1)  | PG6
+| vioLED2       | vioSignalOut.2 | LED blue      (LD4)  | PK3
+| vioLED3       | vioSignalOut.3 | LED orange    (LD2)  | PD4
 */
 
 #include "cmsis_vio.h"
@@ -41,112 +41,123 @@ vioLED3           | vioSignalOut.3 | GPIO K.3:  LD4 BLUE                        
 #include "RTE_Components.h"                     // Component selection
 #include CMSIS_device_header
 
+#if !defined CMSIS_VOUT || !defined CMSIS_VIN
+#include "GPIO_STM32.h"
+#endif
+
 // VIO input, output definitions
-#define VIO_VALUE_NUM           3U              // Number of values
+#ifndef VIO_VALUE_NUM
+#define VIO_VALUE_NUM           5U              // Number of values
+#endif
 
 // VIO input, output variables
 static uint32_t vioSignalIn             __USED; // Memory for incoming signal
 static uint32_t vioSignalOut            __USED; // Memory for outgoing signal
 static int32_t  vioValue[VIO_VALUE_NUM] __USED; // Memory for value used in vioGetValue/vioSetValue
 
+#if !defined CMSIS_VOUT || !defined CMSIS_VIN
+
+// VIO Active State
+#define VIO_ACTIVE_LOW          0U
+#define VIO_ACTIVE_HIGH         1U
+
+typedef struct {
+  uint32_t vioSignal;
+  uint16_t pin;
+  uint8_t  pullResistor;
+  uint8_t  activeState;
+} pinCfg_t;
+
+#if !defined CMSIS_VOUT
+// VOUT Configuration
+static const pinCfg_t outputCfg[] = {
+//  signal,     pin,                   pull resistor,      active state
+  { vioLED0,    GPIO_PIN_ID_PORTD(5),  ARM_GPIO_PULL_NONE, VIO_ACTIVE_LOW },
+  { vioLED1,    GPIO_PIN_ID_PORTG(6),  ARM_GPIO_PULL_NONE, VIO_ACTIVE_LOW },
+  { vioLED2,    GPIO_PIN_ID_PORTK(3),  ARM_GPIO_PULL_NONE, VIO_ACTIVE_LOW },
+  { vioLED3,    GPIO_PIN_ID_PORTD(4),  ARM_GPIO_PULL_NONE, VIO_ACTIVE_LOW }
+};
+#endif
+
+#if !defined CMSIS_VIN
+// VIN Configuration
+static const pinCfg_t inputCfg[] = {
+//  signal,     pin,                   pull resistor,      active state
+  { vioBUTTON0, GPIO_PIN_ID_PORTA(0), ARM_GPIO_PULL_NONE, VIO_ACTIVE_HIGH }
+};
+#endif
+
+// External GPIO Driver
+extern ARM_DRIVER_GPIO Driver_GPIO0;
+static ARM_DRIVER_GPIO *pGPIODrv = &Driver_GPIO0;
+#endif
+
 // Initialize test input, output.
 void vioInit (void) {
+  uint32_t n;
 #if !defined(CMSIS_VOUT) || !defined(CMSIS_VIN)
-  GPIO_InitTypeDef GPIO_InitStruct;
+  ARM_GPIO_Pin_t pin;
 #endif
 
   vioSignalIn  = 0U;
   vioSignalOut = 0U;
 
-  for (uint8_t i = 0U; i < VIO_VALUE_NUM; i++) {
-    vioValue[i] = 0U;
+  for (n = 0U; n < VIO_VALUE_NUM; n++) {
+    vioValue[n] = 0U;
   }
 
-#if !defined(CMSIS_VOUT)
-  // Enable LEDs port clocks
-  __HAL_RCC_GPIOG_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOK_CLK_ENABLE();
+#if !defined CMSIS_VOUT
+  for (n = 0U; n < (sizeof(outputCfg) / sizeof(pinCfg_t)); n++) {
+    pin = (ARM_GPIO_Pin_t)outputCfg[n].pin;
+    pGPIODrv->Setup(pin, NULL);
+    pGPIODrv->SetOutputMode(pin, ARM_GPIO_PUSH_PULL);
+    pGPIODrv->SetPullResistor(pin, outputCfg[n].pullResistor);
+    pGPIODrv->SetDirection(pin, ARM_GPIO_OUTPUT);
 
-  // Initialize LEDs pins
-  GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull  = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-
-  // Initialize LED0 pin
-  GPIO_InitStruct.Pin   = GPIO_PIN_6;
-  HAL_GPIO_Init    (GPIOG, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, GPIO_PIN_SET);
-
-  // Initialize LED1 pin
-  GPIO_InitStruct.Pin   = GPIO_PIN_4;
-  HAL_GPIO_Init    (GPIOD, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
-
-  // Initialize LED2 pin
-  GPIO_InitStruct.Pin   = GPIO_PIN_5;
-  HAL_GPIO_Init    (GPIOD, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_5, GPIO_PIN_SET);
-
-  // Initialize LED3 pin
-  GPIO_InitStruct.Pin   = GPIO_PIN_3;
-  HAL_GPIO_Init    (GPIOK, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(GPIOK, GPIO_PIN_3, GPIO_PIN_SET);
+    // Set initial pin state to inactive
+    if (outputCfg[n].activeState == VIO_ACTIVE_HIGH) {
+      pGPIODrv->SetOutput(pin, 0U);
+    } else {
+      pGPIODrv->SetOutput(pin, 1U);
+    }
+  }
 #endif
 
-#if !defined(CMSIS_VIN)
-  // Enable buttons port clocks
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-
-  // Initialize buttons pins
-  GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull  = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-
-  // Initialize USER button pin
-  GPIO_InitStruct.Pin   = GPIO_PIN_0;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+#if !defined CMSIS_VIN
+  for (n = 0U; n < (sizeof(inputCfg) / sizeof(pinCfg_t)); n++) {
+    pin = (ARM_GPIO_Pin_t)inputCfg[n].pin;
+    pGPIODrv->Setup(pin, NULL);
+    pGPIODrv->SetPullResistor(pin, inputCfg[n].pullResistor);
+    pGPIODrv->SetDirection(pin, ARM_GPIO_INPUT);
+  }
 #endif
 }
 
 // Set signal output.
 void vioSetSignal (uint32_t mask, uint32_t signal) {
+#if !defined CMSIS_VOUT
+  ARM_GPIO_Pin_t pin;
+  uint32_t pinValue, n;
+#endif
 
   vioSignalOut &= ~mask;
   vioSignalOut |=  mask & signal;
 
-#if !defined(CMSIS_VOUT)
+#if !defined CMSIS_VOUT
   // Output signals to LEDs
-  if ((mask & vioLED0) != 0U) {
-    if ((signal & vioLED0) != 0U) {
-      HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, GPIO_PIN_RESET);
-    } else {
-      HAL_GPIO_WritePin(GPIOG, GPIO_PIN_6, GPIO_PIN_SET);
-    }
-  }
-
-  if ((mask & vioLED1) != 0U) {
-    if ((signal & vioLED1) != 0U) {
-      HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET);
-    } else {
-      HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
-    }
-  }
-
-  if ((mask & vioLED2) != 0U) {
-    if ((signal & vioLED2) != 0U) {
-      HAL_GPIO_WritePin(GPIOD, GPIO_PIN_5, GPIO_PIN_RESET);
-    } else {
-      HAL_GPIO_WritePin(GPIOD, GPIO_PIN_5, GPIO_PIN_SET);
-    }
-  }
-
-  if ((mask & vioLED3) != 0U) {
-    if ((signal & vioLED3) != 0U) {
-      HAL_GPIO_WritePin(GPIOK, GPIO_PIN_3, GPIO_PIN_RESET);
-    } else {
-      HAL_GPIO_WritePin(GPIOK, GPIO_PIN_3, GPIO_PIN_SET);
+  for (n = 0U; n < (sizeof(outputCfg) / sizeof(pinCfg_t)); n++) {
+    pin = (ARM_GPIO_Pin_t)outputCfg[n].pin;
+    if ((mask & outputCfg[n].vioSignal) != 0U) {
+      if ((signal & outputCfg[n].vioSignal) != 0U) {
+        pinValue = 1U;
+      } else {
+        pinValue = 0U;
+      }
+      if (pinValue == outputCfg[n].activeState) {
+        pGPIODrv->SetOutput(pin, 1U);
+      } else {
+        pGPIODrv->SetOutput(pin, 0U);
+      }
     }
   }
 #endif
@@ -155,14 +166,22 @@ void vioSetSignal (uint32_t mask, uint32_t signal) {
 // Get signal input.
 uint32_t vioGetSignal (uint32_t mask) {
   uint32_t signal;
+#if !defined CMSIS_VIN
+  ARM_GPIO_Pin_t pin;
+  uint32_t pinValue, n;
+#endif
 
-#if !defined(CMSIS_VIN)
+#if !defined CMSIS_VIN
   // Get input signals from buttons
-  if ((mask & vioBUTTON0) != 0U) {
-    if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET) {
-      vioSignalIn |=  vioBUTTON0;
-    } else {
-      vioSignalIn &= ~vioBUTTON0;
+  for (n = 0U; n < (sizeof(inputCfg) / sizeof(pinCfg_t)); n++) {
+    pin = (ARM_GPIO_Pin_t)inputCfg[n].pin;
+    if ((mask & inputCfg[n].vioSignal) != 0U) {
+      pinValue = pGPIODrv->GetInput(pin);
+      if (pinValue == inputCfg[n].activeState) {
+        vioSignalIn |=  inputCfg[n].vioSignal;
+      } else {
+        vioSignalIn &= ~inputCfg[n].vioSignal;
+      }
     }
   }
 #endif
@@ -173,24 +192,44 @@ uint32_t vioGetSignal (uint32_t mask) {
 }
 
 // Set value output.
+//   Note: vioAOUT not supported.
 void vioSetValue (uint32_t id, int32_t value) {
   uint32_t index = id;
+#if !defined CMSIS_VOUT
+// Add user variables here:
+
+#endif
 
   if (index >= VIO_VALUE_NUM) {
     return;                             /* return in case of out-of-range index */
   }
 
   vioValue[index] = value;
+
+#if !defined CMSIS_VOUT
+// Add user code here:
+
+#endif
 }
 
 // Get value input.
+//   Note: vioAIN not supported.
 int32_t vioGetValue (uint32_t id) {
   uint32_t index = id;
-  int32_t  value = 0;
+  int32_t  value;
+#if !defined CMSIS_VIN
+// Add user variables here:
+
+#endif
 
   if (index >= VIO_VALUE_NUM) {
-    return value;                       /* return 0 in case of out-of-range index */
+    return 0U;                          /* return 0 in case of out-of-range index */
   }
+
+#if !defined CMSIS_VIN
+// Add user code here:
+
+#endif
 
   value = vioValue[index];
 
