@@ -1,8 +1,9 @@
-[![Version](https://img.shields.io/github/v/release/Open-CMSIS-Pack/STM32F469I-DISCO_BSP)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/releases/latest)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-green?label)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/LICENSE-Apache-2.0)
-[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-green?label)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/LICENSE-BSD-3-Clause)
-[![Examples Build Test](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/Test-Examples.yml?logo=arm&logoColor=0091bd&label=Examples%20Build%20Test)](./.ci)
-[![MDK-Middleware Build Test](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/Test-MDK-Middleware-RefApps.yml?logo=arm&logoColor=0091bd&label=MDK-Middleware%20Build%20Test)](./.ci)
+[![Version](https://img.shields.io/github/v/release/Open-CMSIS-Pack/STM32F469I-DISCO_BSP?label=Release)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/releases/latest)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-green?label=License)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/LICENSE-Apache-2.0)
+[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-green?label=License)](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/LICENSE-BSD-3-Clause)
+[![Examples Build Test](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/Test-Examples.yml?logo=arm&logoColor=0091bd&label=Examples%20Build%20Test)](./.github/workflows/Test-Examples.yml)
+[![MDK-Middleware Build Test](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/Test-MDK-Middleware-RefApps.yml?logo=arm&logoColor=0091bd&label=MDK-Middleware%20Build%20Test)](./.github/workflows/Test-MDK-Middleware-RefApps.yml)
+[![Build pack](https://img.shields.io/github/actions/workflow/status/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/pack.yml?logo=arm&logoColor=0091bd&label=Build%20pack)](./.github/workflows/pack.yml)
 
 # STM32F469I-DISCO_BSP
 
@@ -10,7 +11,7 @@ This is the development repository for the **STMicroelectronics STM32F469I-DISCO
 
 This BSP uses the generator integration of the [CMSIS-Toolbox to Configure STM32 Devices with CubeMX](https://open-cmsis-pack.github.io/cmsis-toolbox/CubeMX/) that is also supported in ÂµVision 5.40 and higher.
 
-# Repository top-level structure
+## Repository top-level structure
 
 Directory                   | Description
 :---------------------------|:--------------
@@ -22,13 +23,13 @@ Directory                   | Description
 [Images](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Images)                       | [Pictures](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/blob/main/Images/stm32f469i-disco_large.png) of the board.
 [Layers](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/tree/main/Layers)                       | Board layers for using the board with [CMSIS-Toolbox - Reference Applications](https://open-cmsis-pack.github.io/cmsis-toolbox/ReferenceApplications/).
 
-# Using the development repository
+## Using the development repository
 
 This development repository can be used in a local directory and [mapped as software pack](https://open-cmsis-pack.github.io/cmsis-toolbox/build-tools#install-a-repository) using for example `cpackget` with:
 
     cpackget add <path>/Keil.STM32F469I-DISCO_BSP.pdsc
 
-# Generate software pack
+## Generate software pack
 
 The software pack is generated using bash shell scripts.
 
@@ -45,7 +46,7 @@ The repository uses GitHub Actions to generate the pack and build examples:
 - `.github/workflows/Test-Examples.yml` test build of examples.
 - `.github/workflows/Test-MDK-Middleware-RefApps.yml` test build of MDK Middleware Reference Applications with different compilers.
 
-# Issues
+## Issues
 
 Please feel free to raise an [issue on GitHub](https://github.com/Open-CMSIS-Pack/STM32F469I-DISCO_BSP/issues)
 to report misbehavior (i.e. bugs) or start discussions about enhancements. This
